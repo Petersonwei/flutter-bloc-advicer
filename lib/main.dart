@@ -25,7 +25,7 @@ class AdvicerApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: themeService.currentThemeMode,
-        home: const AdvicerPage(),
+        home: const AdvicerPageWrapperProvider(),
       ),
     );
   }

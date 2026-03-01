@@ -1,20 +1,22 @@
+import 'package:advicer/2_application/pages/advicer/bloc/advicer_bloc.dart';
 import 'package:advicer/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
     required this.text,
     super.key,
-    this.onTap,
   });
 
   final String text;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
-      onTap: onTap,
+      onTap: () {
+        BlocProvider.of<AdvicerBloc>(context).add(AdvicerRequestedEvent());
+      },
       radius: 28,
       splashColor: AppTheme.actionColor.withValues(alpha: 0.2),
       highlightColor: Colors.transparent,

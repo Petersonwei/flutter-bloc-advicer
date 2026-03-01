@@ -1,15 +1,26 @@
 import 'package:advicer/2_application/core/services/theme_service.dart';
 import 'package:advicer/2_application/core/widgets/custom_button.dart';
+import 'package:advicer/2_application/pages/advicer/bloc/advicer_bloc.dart';
 import 'package:advicer/2_application/pages/advicer/widgets/advice_field.dart';
 import 'package:advicer/2_application/pages/advicer/widgets/error_message.dart';
 import 'package:advicer/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class AdvicerPageWrapperProvider extends StatelessWidget {
+  const AdvicerPageWrapperProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AdvicerBloc(),
+      child: const AdvicerPage(),
+    );
+  }
+}
 
 class AdvicerPage extends StatelessWidget {
   const AdvicerPage({super.key});
-
-  static const _previewState = _AdvicerUiState.initial;
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +43,32 @@ class AdvicerPage extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: _buildStateArea(context),
+                child: BlocBuilder<AdvicerBloc, AdvicerState>(
+                  builder: (context, state) {
+                    if (state is AdvicerInitial) {
+                      return const Text(
+                        'Your advice is waiting for you',
+                        textAlign: TextAlign.center,
+                      );
+                    } else if (state is AdvicerStateLoading) {
+                      return const CircularProgressIndicator(
+                        color: AppTheme.actionColor,
+                      );
+                    } else if (state is AdvicerStateLoaded) {
+                      return AdviceField(advice: state.advice);
+                    } else if (state is AdvicerStateError) {
+                      return ErrorMessage(message: state.message);
+                    }
+
+                    return const SizedBox.shrink();
+                  },
+                ),
               ),
             ),
             SizedBox(
               width: double.infinity,
               height: 56,
-              child: CustomButton(
-                text: 'Get Advice',
-                onTap: () => debugPrint('Get Advice button tapped'),
-              ),
+              child: const CustomButton(text: 'Get Advice'),
             ),
             const SizedBox(height: 24),
           ],
@@ -49,31 +76,4 @@ class AdvicerPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildStateArea(BuildContext context) {
-    switch (_previewState) {
-      case _AdvicerUiState.initial:
-        return const Text(
-          'Your advice is waiting for you',
-          textAlign: TextAlign.center,
-        );
-      case _AdvicerUiState.loading:
-        return const CircularProgressIndicator(color: AppTheme.actionColor);
-      case _AdvicerUiState.success:
-        return const AdviceField(
-          advice: 'The only way to do great work is to love what you do.',
-        );
-      case _AdvicerUiState.error:
-        return const ErrorMessage(
-          message: 'Oops, something went wrong. Please try again.',
-        );
-    }
-  }
-}
-
-enum _AdvicerUiState {
-  initial,
-  loading,
-  success,
-  error,
 }
