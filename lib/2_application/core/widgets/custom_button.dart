@@ -1,4 +1,4 @@
-import 'package:advicer/2_application/pages/advicer/bloc/advicer_bloc.dart';
+import 'package:advicer/2_application/pages/advicer/cubit/advicer_cubit.dart';
 import 'package:advicer/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkResponse(
       onTap: () {
-        BlocProvider.of<AdvicerBloc>(context).add(AdvicerRequestedEvent());
+        BlocProvider.of<AdvicerCubit>(context).adviceRequested();
       },
       radius: 28,
       splashColor: AppTheme.actionColor.withValues(alpha: 0.2),
