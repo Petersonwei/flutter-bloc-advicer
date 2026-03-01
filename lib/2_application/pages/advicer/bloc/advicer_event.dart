@@ -1,5 +1,12 @@
 part of 'advicer_bloc.dart';
 
-sealed class AdvicerEvent {}
+sealed class AdvicerEvent extends Equatable {
+  const AdvicerEvent();
 
-final class AdvicerRequestedEvent extends AdvicerEvent {}
+  @override
+  List<Object?> get props => [];
+}
+
+final class AdvicerRequestedEvent extends AdvicerEvent {
+  const AdvicerRequestedEvent();
+}
