@@ -1,6 +1,11 @@
+import 'package:advicer/1_domain/failures/failures.dart';
 import 'package:advicer/1_domain/usecases/advicer_usecases.dart';
 import 'package:advicer/2_application/pages/advicer/cubit/advicer_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+const serverFailureMessage = 'Oops, API Error. Please try again.';
+const cacheFailureMessage = 'Oops, Cache failed. Please try again.';
+const generalFailureMessage = 'Oops, something went wrong. Please try again.';
 
 class AdvicerCubit extends Cubit<AdvicerState> {
   AdvicerCubit() : super(const AdvicerInitial());
@@ -10,15 +15,23 @@ class AdvicerCubit extends Cubit<AdvicerState> {
   Future<void> adviceRequested() async {
     emit(const AdvicerStateLoading());
 
-    try {
-      final adviceEntity = await advicerUseCases.getAdvice();
-      emit(AdvicerStateLoaded(advice: adviceEntity.advice));
-    } catch (_) {
-      emit(
-        const AdvicerStateError(
-          message: 'Oops, something went wrong. Please try again.',
-        ),
-      );
+    final failureOrAdvice = await advicerUseCases.getAdvice();
+
+    failureOrAdvice.fold(
+      (failure) =>
+          emit(AdvicerStateError(message: _mapFailureToMessage(failure))),
+      (advice) => emit(AdvicerStateLoaded(advice: advice.advice)),
+    );
+  }
+
+  String _mapFailureToMessage(Failure failure) {
+    switch (failure) {
+      case ServerFailure _:
+        return serverFailureMessage;
+      case CacheFailure _:
+        return cacheFailureMessage;
+      default:
+        return generalFailureMessage;
     }
   }
 }
