@@ -4,7 +4,40 @@ import 'package:advicer/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// DEBUG-ONLY TLS BYPASS SNIPPET (commented out on purpose):
+//
+// Use this only when the API certificate is invalid/expired and you need
+// to continue local testing on simulator/device.
+//
+// 1) Uncomment the imports below:
+// import 'dart:io';
+// import 'package:flutter/foundation.dart';
+//
+// 2) Uncomment the block in main():
+// if (kDebugMode) {
+//   HttpOverrides.global = DevHttpOverrides();
+// }
+//
+// 3) Uncomment the class below:
+// class DevHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     final client = super.createHttpClient(context);
+//     client.badCertificateCallback = (cert, host, port) {
+//       return host == 'api.flutter-community.de' ||
+//           host == 'api.flutter-community.com';
+//     };
+//     return client;
+//   }
+// }
+//
+// IMPORTANT: Never ship this in production/App Store builds.
+
 void main() {
+  // if (kDebugMode) {
+  //   HttpOverrides.global = DevHttpOverrides();
+  // }
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeService(),

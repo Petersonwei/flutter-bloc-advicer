@@ -1,19 +1,13 @@
-import 'package:advicer/1_domain/entities/advicer_entity.dart';
 import 'package:advicer/1_domain/failures/failures.dart';
+import 'package:advicer/1_domain/entities/advicer_entity.dart';
+import 'package:advicer/1_domain/repositories/advicer_repo.dart';
 import 'package:dartz/dartz.dart';
 
 class AdvicerUseCases {
-  Future<Either<Failure, AdvicerEntity>> getAdvice() async {
-    await Future<void>.delayed(const Duration(seconds: 3));
+  const AdvicerUseCases({required this.advicerRepo});
 
-    // Enable this line to test the error path manually:
-    // return Left(ServerFailure());
+  final AdvicerRepo advicerRepo;
 
-    return const Right(
-      AdvicerEntity(
-        advice: 'Fake advice to test',
-        id: 1,
-      ),
-    );
-  }
+  Future<Either<Failure, AdvicerEntity>> getAdvice() =>
+      advicerRepo.getAdviceFromDataSource();
 }

@@ -1,3 +1,4 @@
+import 'package:advicer/0_data/repositories/advicer_repo_impl.dart';
 import 'package:advicer/1_domain/failures/failures.dart';
 import 'package:advicer/1_domain/usecases/advicer_usecases.dart';
 import 'package:advicer/2_application/pages/advicer/cubit/advicer_state.dart';
@@ -10,18 +11,24 @@ const generalFailureMessage = 'Oops, something went wrong. Please try again.';
 class AdvicerCubit extends Cubit<AdvicerState> {
   AdvicerCubit() : super(const AdvicerInitial());
 
-  final AdvicerUseCases advicerUseCases = AdvicerUseCases();
+  final AdvicerUseCases advicerUseCases = AdvicerUseCases(
+    advicerRepo: AdvicerRepoImpl(),
+  );
 
   Future<void> adviceRequested() async {
     emit(const AdvicerStateLoading());
 
-    final failureOrAdvice = await advicerUseCases.getAdvice();
+    try {
+      final failureOrAdvice = await advicerUseCases.getAdvice();
 
-    failureOrAdvice.fold(
-      (failure) =>
-          emit(AdvicerStateError(message: _mapFailureToMessage(failure))),
-      (advice) => emit(AdvicerStateLoaded(advice: advice.advice)),
-    );
+      failureOrAdvice.fold(
+        (failure) =>
+            emit(AdvicerStateError(message: _mapFailureToMessage(failure))),
+        (advice) => emit(AdvicerStateLoaded(advice: advice.advice)),
+      );
+    } catch (_) {
+      emit(const AdvicerStateError(message: generalFailureMessage));
+    }
   }
 
   String _mapFailureToMessage(Failure failure) {
