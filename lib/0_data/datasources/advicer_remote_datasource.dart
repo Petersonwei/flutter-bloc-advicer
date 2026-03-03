@@ -12,9 +12,7 @@ abstract class AdvicerRemoteDataSource {
 }
 
 class AdvicerRemoteDataSourceImpl implements AdvicerRemoteDataSource {
-  AdvicerRemoteDataSourceImpl({
-    http.Client? client,
-  }) : client = client ?? http.Client();
+  AdvicerRemoteDataSourceImpl({required this.client});
 
   final http.Client client;
 

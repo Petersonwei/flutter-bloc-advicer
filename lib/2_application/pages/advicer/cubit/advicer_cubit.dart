@@ -1,4 +1,3 @@
-import 'package:advicer/0_data/repositories/advicer_repo_impl.dart';
 import 'package:advicer/1_domain/failures/failures.dart';
 import 'package:advicer/1_domain/usecases/advicer_usecases.dart';
 import 'package:advicer/2_application/pages/advicer/cubit/advicer_state.dart';
@@ -9,11 +8,9 @@ const cacheFailureMessage = 'Oops, Cache failed. Please try again.';
 const generalFailureMessage = 'Oops, something went wrong. Please try again.';
 
 class AdvicerCubit extends Cubit<AdvicerState> {
-  AdvicerCubit() : super(const AdvicerInitial());
+  AdvicerCubit({required this.advicerUseCases}) : super(const AdvicerInitial());
 
-  final AdvicerUseCases advicerUseCases = AdvicerUseCases(
-    advicerRepo: AdvicerRepoImpl(),
-  );
+  final AdvicerUseCases advicerUseCases;
 
   Future<void> adviceRequested() async {
     emit(const AdvicerStateLoading());

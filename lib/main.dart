@@ -1,5 +1,6 @@
 import 'package:advicer/2_application/core/services/theme_service.dart';
 import 'package:advicer/2_application/pages/advicer/advicer_page.dart';
+import 'package:advicer/injection.dart' as di;
 import 'package:advicer/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,10 +34,12 @@ import 'package:provider/provider.dart';
 //
 // IMPORTANT: Never ship this in production/App Store builds.
 
-void main() {
+void main() async {
   // if (kDebugMode) {
   //   HttpOverrides.global = DevHttpOverrides();
   // }
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
 
   runApp(
     ChangeNotifierProvider(

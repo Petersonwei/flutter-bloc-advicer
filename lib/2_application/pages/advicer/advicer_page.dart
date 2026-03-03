@@ -4,6 +4,7 @@ import 'package:advicer/2_application/pages/advicer/cubit/advicer_cubit.dart';
 import 'package:advicer/2_application/pages/advicer/cubit/advicer_state.dart';
 import 'package:advicer/2_application/pages/advicer/widgets/advice_field.dart';
 import 'package:advicer/2_application/pages/advicer/widgets/error_message.dart';
+import 'package:advicer/injection.dart' as di;
 import 'package:advicer/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ class AdvicerPageWrapperProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdvicerCubit(),
+      create: (context) => di.sl<AdvicerCubit>(),
       child: const AdvicerPage(),
     );
   }

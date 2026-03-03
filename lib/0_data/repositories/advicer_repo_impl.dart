@@ -8,9 +8,7 @@ import 'package:advicer/1_domain/repositories/advicer_repo.dart';
 import 'package:dartz/dartz.dart';
 
 class AdvicerRepoImpl implements AdvicerRepo {
-  AdvicerRepoImpl({
-    AdvicerRemoteDataSource? remoteDataSource,
-  }) : remoteDataSource = remoteDataSource ?? AdvicerRemoteDataSourceImpl();
+  AdvicerRepoImpl({required this.remoteDataSource});
 
   final AdvicerRemoteDataSource remoteDataSource;
 
