@@ -26,11 +26,11 @@ class AdvicerRemoteDataSourceImpl implements AdvicerRemoteDataSource {
       headers: {'content-type': 'application/json'},
     );
 
-    if (response.statusCode == 200) {
-      final decodedJson = json.decode(response.body) as Map<String, dynamic>;
-      return AdvicerModel.fromJson(decodedJson);
-    } else {
+    if (response.statusCode != 200) {
       throw ServerException();
     }
+
+    final decodedJson = json.decode(response.body) as Map<String, dynamic>;
+    return AdvicerModel.fromJson(decodedJson);
   }
 }

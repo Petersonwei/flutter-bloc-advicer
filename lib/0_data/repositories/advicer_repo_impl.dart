@@ -21,6 +21,8 @@ class AdvicerRepoImpl implements AdvicerRepo {
       return Right(advice);
     } on ServerException {
       return Left(ServerFailure());
+    } on CacheException {
+      return Left(CacheFailure());
     } on SocketException {
       return Left(ServerFailure());
     } on HandshakeException {
