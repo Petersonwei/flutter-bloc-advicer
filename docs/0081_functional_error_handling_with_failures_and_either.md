@@ -192,6 +192,23 @@ class AdvicerCubit extends Cubit<AdvicerState> {
    - Failure -> map to message -> emit `Error`.
    - Success -> extract `advice` -> emit `Loaded`.
 
+## Quick Manual Testing Tip
+
+To test the error UI on purpose, open `lib/1_domain/usecases/advicer_usecases.dart` and toggle these lines:
+
+```dart
+// return Left(ServerFailure()); // uncomment to force error path
+
+return const Right(
+  AdvicerEntity(
+    advice: 'Fake advice to test',
+    id: 1,
+  ),
+);
+```
+
+When `Left(ServerFailure())` is active, tapping **Get Advice** should show the error message from the Cubit mapper.
+
 ## Best Practices (Why this is the Flutter way)
 
 1. Keep failures typed and explicit instead of generic thrown strings.

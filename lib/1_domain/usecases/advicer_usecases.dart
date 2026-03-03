@@ -6,6 +6,9 @@ class AdvicerUseCases {
   Future<Either<Failure, AdvicerEntity>> getAdvice() async {
     await Future<void>.delayed(const Duration(seconds: 3));
 
+    // Enable this line to test the error path manually:
+    // return Left(ServerFailure());
+
     return const Right(
       AdvicerEntity(
         advice: 'Fake advice to test',
