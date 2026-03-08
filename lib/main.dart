@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:advicer/2_application/core/services/theme_service.dart';
 import 'package:advicer/2_application/pages/advicer/advicer_page.dart';
 import 'package:advicer/injection.dart' as di;
 import 'package:advicer/theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,9 +38,9 @@ import 'package:provider/provider.dart';
 // IMPORTANT: Never ship this in production/App Store builds.
 
 void main() async {
-  // if (kDebugMode) {
-  //   HttpOverrides.global = DevHttpOverrides();
-  // }
+  if (kDebugMode) {
+    HttpOverrides.global = DevHttpOverrides();
+  }
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
 
@@ -47,6 +50,19 @@ void main() async {
       child: const AdvicerApp(),
     ),
   );
+}
+
+// DEBUG-ONLY TLS BYPASS
+class DevHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+    client.badCertificateCallback = (cert, host, port) {
+      return host == 'api.flutter-community.de' ||
+          host == 'api.flutter-community.com';
+    };
+    return client;
+  }
 }
 
 class AdvicerApp extends StatelessWidget {
