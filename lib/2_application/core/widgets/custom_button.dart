@@ -13,6 +13,10 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEnabled = onTap != null;
+    final buttonColor = isEnabled ? AppTheme.actionColor : Colors.red.shade300;
+    final textColor = isEnabled ? Colors.white : Colors.black45;
+
     return InkResponse(
       onTap: onTap,
       radius: 28,
@@ -21,7 +25,7 @@ class CustomButton extends StatelessWidget {
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(16),
-        color: AppTheme.actionColor,
+        color: buttonColor,
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -31,7 +35,7 @@ class CustomButton extends StatelessWidget {
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white,
+                  color: textColor,
                   fontWeight: FontWeight.w700,
                 ),
           ),
