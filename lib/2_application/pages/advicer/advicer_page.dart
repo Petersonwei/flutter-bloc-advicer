@@ -70,7 +70,10 @@ class AdvicerPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               height: 56,
-              child: const CustomButton(text: 'Get Advice'),
+              child: CustomButton(
+                text: 'Get Advice',
+                onTap: () => context.read<AdvicerCubit>().adviceRequested(),
+              ),
             ),
             const SizedBox(height: 24),
           ],

@@ -7,6 +7,8 @@ class AdviceField extends StatelessWidget {
     super.key,
   });
 
+  static const emptyAdvice = 'No advice available yet.';
+
   final String advice;
 
   @override
@@ -25,7 +27,7 @@ class AdviceField extends StatelessWidget {
           ),
         ),
         child: Text(
-          '"$advice"',
+          advice.isNotEmpty ? '"$advice"' : emptyAdvice,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontSize: 22,
