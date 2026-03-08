@@ -18,15 +18,15 @@ class AdvicerRepoImpl implements AdvicerRepo {
       final advice = await remoteDataSource.getRandomAdviceFromApi();
       return Right(advice);
     } on ServerException {
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } on CacheException {
-      return Left(CacheFailure());
+      return const Left(CacheFailure());
     } on SocketException {
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } on HandshakeException {
-      return Left(ServerFailure());
+      return const Left(ServerFailure());
     } catch (_) {
-      return Left(GeneralFailure());
+      return const Left(GeneralFailure());
     }
   }
 }
